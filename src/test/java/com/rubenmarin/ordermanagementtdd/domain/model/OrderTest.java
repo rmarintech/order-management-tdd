@@ -42,6 +42,7 @@ import java.math.BigDecimal;
  * Como cliente, quiero cancelar un pedido para indicar que ya no deseo continuar con él.
  * 1. Un pedido en estado DRAFT puede cancelarse y pasar a CANCELLED
  * 2. Un pedido en estado CANCELLED no puede volver a cancelarse.
+ * 3. Un pedido en estado CONFIRMED no puede cancelarse.
  */
 class OrderTest {
     @Test
@@ -264,6 +265,23 @@ class OrderTest {
         // Arrange
         Order order = Order.create();
         order.cancel();
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            order.cancel();
+        });
+
+    }
+
+    @Test
+    void shouldRejectCancelConfirmedOrder() {
+        // Arrange
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.TWO;
+        int quantity = 10;
+        order.addOrderItem(productId, unitPrice, quantity);
+        order.confirm();
 
         // Act & Assert
         Assertions.assertThrows(IllegalStateException.class, () -> {
