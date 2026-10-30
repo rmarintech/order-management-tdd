@@ -70,19 +70,46 @@ class OrderTest {
 
     @Test
     void shouldAddOrderItemToDraftOrder() {
-
         // Arange
         Order order = Order.create();
         ProductId productId = ProductId.generateProductId();
-        BigDecimal productPrice = BigDecimal.TEN;
-        int productQuantity = 10;
+        BigDecimal unitPrice = BigDecimal.TEN;
+        int quantity = 10;
 
         // Act
-        order.addOrderItem(productId, productPrice, productQuantity);
+        order.addOrderItem(productId, unitPrice, quantity);
 
         // Assert
         Assertions.assertEquals(1, order.getOrderItems().size());
 
-
     }
+    @Test
+    void shouldRejectZeroQuantity() {
+
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.TEN;
+        int quantity = 0;
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            order.addOrderItem(productId, unitPrice, quantity);
+        });
+    }
+    @Test
+    void shouldRejectNegativeQuantity() {
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.TEN;
+        int quantity = -10;
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            order.addOrderItem(productId, unitPrice, quantity);
+        });
+    }
+
+    /**Comprobar que la cantidad es positiva.
+            * 3. Comprobar que el precio unitario no es negativo.
+            * 4. Calcular el importe total de una línea.
+            * 5. Calcular el importe total del pedido.
+            * 6. Impedir modificaciones cuando el pedido no esté en
+            * estado DRAFT (cuando incorporemos otros estados).
+     * */
 }
