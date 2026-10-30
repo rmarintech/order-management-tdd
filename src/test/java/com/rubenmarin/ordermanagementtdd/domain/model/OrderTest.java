@@ -2,6 +2,8 @@ package com.rubenmarin.ordermanagementtdd.domain.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
@@ -83,23 +85,13 @@ class OrderTest {
         Assertions.assertEquals(1, order.getOrderItems().size());
 
     }
-    @Test
-    void shouldRejectZeroQuantity() {
 
+    @ParameterizedTest
+    @ValueSource(ints = {-1,0})
+    void shouldRejectNegativeOrZeroQuantity(int quantity) {
         Order order = Order.create();
         ProductId productId = ProductId.generateProductId();
         BigDecimal unitPrice = BigDecimal.TEN;
-        int quantity = 0;
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            order.addOrderItem(productId, unitPrice, quantity);
-        });
-    }
-    @Test
-    void shouldRejectNegativeQuantity() {
-        Order order = Order.create();
-        ProductId productId = ProductId.generateProductId();
-        BigDecimal unitPrice = BigDecimal.TEN;
-        int quantity = -10;
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             order.addOrderItem(productId, unitPrice, quantity);
         });
