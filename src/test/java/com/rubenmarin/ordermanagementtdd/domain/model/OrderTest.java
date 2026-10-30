@@ -126,6 +126,17 @@ class OrderTest {
     }
 
     @Test
+    void shouldRejectNullUnitPrice(){
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();;
+        BigDecimal unitPrice = null;
+        int quantity = 1;
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            order.addOrderItem(productId, unitPrice, quantity);
+        });
+    }
+
+    @Test
     void shouldRejectNullProductId(){
         Order order = Order.create();
         ProductId productId = null;
