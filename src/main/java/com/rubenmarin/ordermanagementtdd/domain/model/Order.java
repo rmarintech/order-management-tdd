@@ -38,8 +38,7 @@ public class Order {
         return items
                 .stream()
                 .map(orderItem -> orderItem.calculateTotalPrice())
-                .reduce((a,b) -> (a.add(b)))
-                .orElse(BigDecimal.ZERO);
+                .reduce(BigDecimal.ZERO,(a,b) -> (a.add(b)));
     }
 
     public void addOrderItem(ProductId productId, BigDecimal unitPrice, int quantity) {
