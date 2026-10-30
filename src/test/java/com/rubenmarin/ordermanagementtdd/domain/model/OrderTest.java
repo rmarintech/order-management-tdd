@@ -7,44 +7,16 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
-/**
- * User Story 1:
- * Como cliente, quiero crear un pedido vacío para poder añadir productos posteriormente.
- * Un pedido recién creado debe cumplir estas condiciones:
- * 1. Tener el estado DRAFT.
- * 2. Tener un identificador único.
- * 3. No contener productos.
- * 4. Tener un importe total de cero.
- */
-
-/**
- * User Story 2:
- * Como cliente, quiero añadir productos a mi pedido indicando
- * su cantidad y precio unitario para calcular el importe total.
- * 1. Añadir un OrderItem a un pedido en estado DRAFT.
- * 2. Comprobar que la cantidad es positiva.
- * 3. Comprobar que el precio unitario no es negativo.
- * 4. Calcular el importe total de una línea.
- * 5. Calcular el importe total del pedido.
- * 6. Impedir modificaciones cuando el pedido no esté en
- * estado DRAFT (cuando incorporemos otros estados).
- */
-
-/**
- * User Story 3 — Confirmar pedidos
- * 1. Un pedido DRAFT con productos puede pasar a CONFIRMED.
- * 2. Un pedido vacío no puede confirmarse.
- * 3. Un pedido confirmado no puede confirmarse otra vez.
- */
-
-/**
- * User Story 4 — Cancelar pedidos
- * Como cliente, quiero cancelar un pedido para indicar que ya no deseo continuar con él.
- * 1. Un pedido en estado DRAFT puede cancelarse y pasar a CANCELLED
- * 2. Un pedido en estado CANCELLED no puede volver a cancelarse.
- * 3. Un pedido en estado CONFIRMED no puede cancelarse.
- */
 class OrderTest {
+    /**
+     * User Story 1:
+     * Como cliente, quiero crear un pedido vacío para poder añadir productos posteriormente.
+     * Un pedido recién creado debe cumplir estas condiciones:
+     * 1. Tener el estado DRAFT.
+     * 2. Tener un identificador único.
+     * 3. No contener productos.
+     * 4. Tener un importe total de cero.
+     */
     @Test
     void shouldCreateOrderWithDraftStatus() {
         // Act
@@ -81,7 +53,18 @@ class OrderTest {
 
     }
 
-    /**US2*/
+    /**
+     * User Story 2:
+     * Como cliente, quiero añadir productos a mi pedido indicando
+     * su cantidad y precio unitario para calcular el importe total.
+     * 1. Añadir un OrderItem a un pedido en estado DRAFT.
+     * 2. Comprobar que la cantidad es positiva.
+     * 3. Comprobar que el precio unitario no es negativo.
+     * 4. Calcular el importe total de una línea.
+     * 5. Calcular el importe total del pedido.
+     * 6. Impedir modificaciones cuando el pedido no esté en
+     * estado DRAFT (cuando incorporemos otros estados).
+     */
     @Test
     void shouldAddOrderItemToDraftOrder() {
         // Arrange
@@ -201,7 +184,12 @@ class OrderTest {
             order.addOrderItem(productId, unitPrice, quantity);
         });
     }
-/**US3*/
+    /**
+     * User Story 3 — Confirmar pedidos
+     * 1. Un pedido DRAFT con productos puede pasar a CONFIRMED.
+     * 2. Un pedido vacío no puede confirmarse.
+     * 3. Un pedido confirmado no puede confirmarse otra vez.
+     */
     @Test
     void shouldConfirmDraftOrderWithItems() {
         // Arrange
@@ -246,7 +234,14 @@ class OrderTest {
 
     }
 
-    /**US4*/
+    /**
+     * User Story 4 — Cancelar pedidos
+     * Como cliente, quiero cancelar un pedido para indicar que ya no deseo continuar con él.
+     * 1. Un pedido en estado DRAFT puede cancelarse y pasar a CANCELLED
+     * 2. Un pedido en estado CANCELLED no puede volver a cancelarse.
+     * 3. Un pedido en estado CONFIRMED no puede cancelarse.
+     * 4. Un pedido en estado CANCELLED no puede recibir nuevos OrderItem
+     */
     @Test
     void shouldCancelDraftOrder() {
         // Arrange
@@ -288,5 +283,19 @@ class OrderTest {
             order.cancel();
         });
 
+    }
+    @Test
+    void shouldRejectAddingItemsToCancelledOrder() {
+        // Arrange
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.TWO;
+        int quantity = 10;
+        order.cancel();
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            order.addOrderItem(productId, unitPrice, quantity);
+        });
     }
 }
