@@ -109,6 +109,22 @@ class OrderTest {
 
     }
 
+    @Test
+    void shouldAllowZeroUnitPrice() {
+        // Arrange
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.ZERO;
+        int quantity = 10;
+
+        // Act
+        order.addOrderItem(productId, unitPrice, quantity);
+
+        // Assert
+        Assertions.assertEquals(BigDecimal.ZERO, order.getOrderItems().getFirst().getUnitPrice());
+
+    }
+
     /**Comprobar que la cantidad es positiva.
             * 3. Comprobar que el precio unitario no es negativo.
             * 4. Calcular el importe total de una línea.
