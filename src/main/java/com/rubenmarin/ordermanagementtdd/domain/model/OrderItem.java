@@ -1,7 +1,6 @@
 package com.rubenmarin.ordermanagementtdd.domain.model;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class OrderItem {
 
