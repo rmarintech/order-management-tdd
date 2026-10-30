@@ -69,7 +69,6 @@ class OrderTest {
         // Assert
         Assertions.assertTrue(order.getOrderItems().isEmpty());
     }
-
     @Test
     void shouldCreateOrderWithTotalPriceEqualsToZero() {
         // Act
@@ -79,6 +78,7 @@ class OrderTest {
 
     }
 
+    /**US2*/
     @Test
     void shouldAddOrderItemToDraftOrder() {
         // Arrange
@@ -92,7 +92,6 @@ class OrderTest {
 
         // Assert
         Assertions.assertEquals(1, order.getOrderItems().size());
-
     }
 
     @ParameterizedTest
@@ -119,7 +118,6 @@ class OrderTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             order.addOrderItem(productId, unitPrice, quantity);
         });
-
     }
 
     @Test
@@ -135,7 +133,6 @@ class OrderTest {
 
         // Assert
         Assertions.assertEquals(BigDecimal.ZERO, order.getOrderItems().getFirst().getUnitPrice());
-
     }
 
     @Test
@@ -185,7 +182,23 @@ class OrderTest {
         // Assert
         Assertions.assertEquals(BigDecimal.valueOf(11), orderTotalPrice);
     }
+    @Test
+    void shouldRejectAddingItemsToConfirmedOrder() {
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.TWO;
+        int quantity = 10;
+        order.addOrderItem(productId, unitPrice, quantity);
 
+        // Act
+        order.confirm();
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            order.addOrderItem(productId, unitPrice, quantity);
+        });
+    }
+/**US3*/
     @Test
     void shouldConfirmDraftOrderWithItems() {
         // Arrange
@@ -211,6 +224,24 @@ class OrderTest {
         Assertions.assertThrows(IllegalStateException.class, () -> {
             order.confirm();
         });
+    }
+
+    @Test
+    void shouldRejectConfirmingAlreadyConfirmedOrder() {
+
+        // Arrange
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.TWO;
+        int quantity = 10;
+        order.addOrderItem(productId, unitPrice, quantity);
+        order.confirm();
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            order.confirm();
+        });
+
     }
 
 /** User Story 3 — Confirmar pedidos
