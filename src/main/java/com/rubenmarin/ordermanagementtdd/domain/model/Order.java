@@ -47,6 +47,9 @@ public class Order {
     }
 
     public void confirm() {
+        if(status!=OrderStatus.DRAFT){
+            throw new IllegalStateException("Only draft orders can be confirmed.");
+        }
         if(items.isEmpty()) {
             throw new IllegalStateException("Order has no order items.");
         }
