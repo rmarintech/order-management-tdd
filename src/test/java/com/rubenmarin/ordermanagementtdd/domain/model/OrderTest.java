@@ -41,6 +41,7 @@ import java.math.BigDecimal;
  * User Story 4 — Cancelar pedidos
  * Como cliente, quiero cancelar un pedido para indicar que ya no deseo continuar con él.
  * 1. Un pedido en estado DRAFT puede cancelarse y pasar a CANCELLED
+ * 2. Un pedido en estado CANCELLED no puede volver a cancelarse.
  */
 class OrderTest {
     @Test
@@ -255,6 +256,19 @@ class OrderTest {
 
         //Assert
         Assertions.assertEquals(OrderStatus.CANCELLED, order.getStatus());
+
+    }
+
+    @Test
+    void shouldRejectCancelCancelledOrder() {
+        // Arrange
+        Order order = Order.create();
+        order.cancel();
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            order.cancel();
+        });
 
     }
 }
