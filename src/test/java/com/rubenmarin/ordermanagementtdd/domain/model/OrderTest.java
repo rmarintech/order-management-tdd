@@ -32,6 +32,15 @@ import java.math.BigDecimal;
  * estado DRAFT (cuando incorporemos otros estados).
  */
 
+/**
+ *
+ * User Story 3 — Confirmar pedidos
+ * 1. Un pedido DRAFT con productos puede pasar a CONFIRMED.
+ * 2. Un pedido vacío no puede confirmarse.
+ * 3. Un pedido confirmado no puede confirmarse otra vez.
+*/
+
+
 class OrderTest {
     @Test
     void shouldCreateOrderWithDraftStatus() {
@@ -169,10 +178,28 @@ class OrderTest {
         Assertions.assertEquals(BigDecimal.valueOf(11), orderTotalPrice);
     }
 
-/**
-            * 4. Calcular el importe total de una línea.
-            * 5. Calcular el importe total del pedido.
-            * 6. Impedir modificaciones cuando el pedido no esté en
-            * estado DRAFT (cuando incorporemos otros estados).
-     * */
+    @Test
+    void shouldConfirmDraftOrderWithItems() {
+
+        // Arrange
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.TWO;
+        int quantity = 10;
+        order.addOrderItem(productId, unitPrice, quantity);
+
+        // Act
+        order.confirm();
+
+        //Assert
+        Assertions.assertEquals(OrderStatus.CONFIRMED, order.getStatus());
+
+
+    }
+
+/** User Story 3 — Confirmar pedidos
+ * 1. Un pedido DRAFT con productos puede pasar a CONFIRMED.
+ * 2. Un pedido vacío no puede confirmarse.
+            * 3. Un pedido confirmado no puede confirmarse otra vez.
+            */
 }
