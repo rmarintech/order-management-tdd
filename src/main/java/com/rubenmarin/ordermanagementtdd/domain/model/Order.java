@@ -42,6 +42,9 @@ public class Order {
     }
 
     public void addOrderItem(ProductId productId, BigDecimal unitPrice, int quantity) {
+        if(status!=OrderStatus.DRAFT){
+            throw new IllegalStateException("Items can only be added to draft orders.");
+        }
         OrderItem orderItem = new OrderItem(productId, unitPrice,  quantity) ;
         items.add(orderItem);
     }
