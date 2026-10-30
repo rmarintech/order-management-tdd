@@ -97,6 +97,18 @@ class OrderTest {
         });
     }
 
+    @Test
+    void shouldRejectNegativeUnitPrice(){
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = new  BigDecimal("-1");
+        int quantity = 1;
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            order.addOrderItem(productId, unitPrice, quantity);
+        });
+
+    }
+
     /**Comprobar que la cantidad es positiva.
             * 3. Comprobar que el precio unitario no es negativo.
             * 4. Calcular el importe total de una línea.
