@@ -3,6 +3,8 @@ package com.rubenmarin.ordermanagementtdd.domain.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 // UserStory1:
 // Como cliente, quiero crear un pedido vacío para poder añadir productos posteriormente.
 //      Un pedido recién creado debe cumplir estas condiciones:
@@ -12,13 +14,14 @@ import org.junit.jupiter.api.Test;
 //          4. Tener un importe total de cero.
 
 class OrderTest {
-     @Test
-     void shouldCreateOrderWithDraftStatus() {
-         // Act
-         Order order = Order.create();
-         // Assert
-         Assertions.assertEquals(OrderStatus.DRAFT, order.getStatus());
-     }
+    @Test
+    void shouldCreateOrderWithDraftStatus() {
+        // Act
+        Order order = Order.create();
+        // Assert
+        Assertions.assertEquals(OrderStatus.DRAFT, order.getStatus());
+    }
+
     @Test
     void shouldCreateOrderWithUniqueIdentifier() {
         // Act
@@ -37,5 +40,14 @@ class OrderTest {
         Order order = Order.create();
         // Assert
         Assertions.assertTrue(order.getOrderItems().isEmpty());
+    }
+
+    @Test
+    void shouldCreateOrderWithTotalPriceEqualsToZero() {
+        // Act
+        Order order = Order.create();
+        // Assert
+        Assertions.assertEquals(BigDecimal.ZERO, order.getTotalPrice());
+
     }
 }
