@@ -11,27 +11,36 @@ public class Order {
     private final OrderId orderId;
     private final List<OrderItem> items;
 
-    private Order(){
+    private Order() {
         this.orderId = OrderId.generateOrderId();
         this.status = OrderStatus.DRAFT;
         this.items = new ArrayList<>();
     }
 
-    public static Order create(){
+    public static Order create() {
         return new Order();
     }
 
-    public OrderStatus getStatus(){
+    public OrderStatus getStatus() {
         return this.status;
     }
-    public OrderId getOrderId(){
+
+    public OrderId getOrderId() {
         return this.orderId;
     }
-    public List<OrderItem> getOrderItems(){
+
+    public List<OrderItem> getOrderItems() {
         // Evita order.getOrderItems().add(item);
         return Collections.unmodifiableList(items);
     }
+
     public BigDecimal getTotalPrice() {
         return BigDecimal.ZERO;
+    }
+
+    public void addOrderItem(ProductId productId, BigDecimal unitPrice, int quantity) {
+
+        OrderItem orderItem = new OrderItem(productId, unitPrice,  quantity) ;
+        items.add(orderItem);
     }
 }
