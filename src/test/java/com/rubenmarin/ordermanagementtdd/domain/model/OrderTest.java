@@ -147,8 +147,8 @@ class OrderTest {
         });
     }
 
-    /**Comprobar que la cantidad es positiva.
-            * 3. Comprobar que el precio unitario no es negativo.
+
+/**
             * 4. Calcular el importe total de una línea.
             * 5. Calcular el importe total del pedido.
             * 6. Impedir modificaciones cuando el pedido no esté en
