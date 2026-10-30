@@ -1,13 +1,20 @@
 package com.rubenmarin.ordermanagementtdd.domain.model;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Order {
 
     private final OrderStatus status;
     private final OrderId orderId;
+    private final List<OrderItem> items;
 
     private Order(){
         this.orderId = OrderId.generateOrderId();
         this.status = OrderStatus.DRAFT;
+        this.items = new ArrayList<>();
     }
 
     public static Order create(){
@@ -19,5 +26,12 @@ public class Order {
     }
     public OrderId getOrderId(){
         return this.orderId;
+    }
+    public List<OrderItem> getOrderItems(){
+        // Evita order.getOrderItems().add(item);
+        return Collections.unmodifiableList(items);
+    }
+    public BigDecimal getTotalPrice() {
+        return BigDecimal.ZERO;
     }
 }
