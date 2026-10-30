@@ -29,6 +29,10 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
+    public BigDecimal calculateTotalPrice() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
     public ProductId getProductId() {
         return productId;
     }
