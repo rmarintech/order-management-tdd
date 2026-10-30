@@ -14,11 +14,20 @@ import org.junit.jupiter.api.Test;
 class OrderTest {
      @Test
      void shouldCreateOrderWithDraftStatus() {
-
          // Act
          Order order = Order.create();
-
          // Assert
          Assertions.assertEquals(OrderStatus.DRAFT, order.getStatus());
      }
+    @Test
+    void shouldCreateOrderWithUniqueIdentifier() {
+        // Act
+        Order firstOrder = Order.create();
+        Order secondOrder = Order.create();
+
+        // Assert
+        Assertions.assertNotNull(firstOrder.getOrderId());
+        Assertions.assertNotNull(secondOrder.getOrderId());
+        Assertions.assertNotEquals(firstOrder.getOrderId(), secondOrder.getOrderId());
+    }
 }
