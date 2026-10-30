@@ -47,6 +47,9 @@ public class Order {
     }
 
     public void confirm() {
+        if(items.isEmpty()) {
+            throw new IllegalStateException("Order has no order items.");
+        }
         status = OrderStatus.CONFIRMED;
 
     }
