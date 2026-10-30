@@ -16,6 +16,13 @@ public class OrderItem {
            throw new IllegalArgumentException("Quantity must be greater than zero.");
         }
 
+        if (unitPrice.signum() < 0) {
+            throw new IllegalArgumentException("UnitPrice cannot be negative.");
+        }
+
+        if (productId == null) {
+            throw new IllegalArgumentException("ProductId cannot be null.");
+        }
 
         this.productId = productId;
         this.unitPrice = unitPrice;
