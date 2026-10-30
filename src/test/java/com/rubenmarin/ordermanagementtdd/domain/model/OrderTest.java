@@ -125,6 +125,17 @@ class OrderTest {
 
     }
 
+    @Test
+    void shouldRejectNullProductId(){
+        Order order = Order.create();
+        ProductId productId = null;
+        BigDecimal unitPrice = BigDecimal.TEN;
+        int quantity = 1;
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            order.addOrderItem(productId, unitPrice, quantity);
+        });
+    }
+
     /**Comprobar que la cantidad es positiva.
             * 3. Comprobar que el precio unitario no es negativo.
             * 4. Calcular el importe total de una línea.
