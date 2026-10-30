@@ -55,4 +55,16 @@ class GetOrderServiceTest {
         );
 
     }
+    @Test
+    void shouldReturnEmptyWhenOrderDoesNotExist() {
+
+        OrderId orderId = OrderId.generateOrderId();
+
+        Mockito.when(orderRepository.findById(orderId))
+                .thenReturn(Optional.empty());
+
+        Optional<Order> found = getOrderService.findById(orderId);
+
+        Assertions.assertTrue(found.isEmpty());
+    }
 }
