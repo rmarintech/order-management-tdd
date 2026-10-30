@@ -61,6 +61,9 @@ public class Order {
     }
 
     public void cancel() {
+        if(status!=OrderStatus.DRAFT){
+            throw new IllegalStateException("Only draft orders can be cancelled.");
+        }
         status = OrderStatus.CANCELLED;
     }
 }
