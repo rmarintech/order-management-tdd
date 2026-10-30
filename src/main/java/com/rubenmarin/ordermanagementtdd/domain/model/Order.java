@@ -35,7 +35,11 @@ public class Order {
     }
 
     public BigDecimal getTotalPrice() {
-        return BigDecimal.ZERO;
+        return items
+                .stream()
+                .map(orderItem -> orderItem.calculateTotalPrice())
+                .reduce((a,b) -> (a.add(b)))
+                .orElse(BigDecimal.ZERO);
     }
 
     public void addOrderItem(ProductId productId, BigDecimal unitPrice, int quantity) {
