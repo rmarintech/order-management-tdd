@@ -241,6 +241,7 @@ class OrderTest {
      * 2. Un pedido en estado CANCELLED no puede volver a cancelarse.
      * 3. Un pedido en estado CONFIRMED no puede cancelarse.
      * 4. Un pedido en estado CANCELLED no puede recibir nuevos OrderItem
+     * 5. Un pedido en estado CANCELLED no puede confirmarse.
      */
     @Test
     void shouldCancelDraftOrder() {
@@ -296,6 +297,21 @@ class OrderTest {
         // Act & Assert
         Assertions.assertThrows(IllegalStateException.class, () -> {
             order.addOrderItem(productId, unitPrice, quantity);
+        });
+    }
+
+    @Test
+    void shouldRejectConfirmCancelledOrder() {
+        // Arrange
+        Order order = Order.create();
+        ProductId productId = ProductId.generateProductId();
+        BigDecimal unitPrice = BigDecimal.TWO;
+        int quantity = 10;
+        order.cancel();
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            order.confirm();
         });
     }
 }
