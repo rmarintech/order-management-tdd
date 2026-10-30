@@ -147,6 +147,27 @@ class OrderTest {
         });
     }
 
+    @Test
+    void shouldCalculateOrderTotalPrice() {
+        // Arange
+        Order order = Order.create();
+        ProductId product1Id = ProductId.generateProductId();
+        BigDecimal unitPrice1 = BigDecimal.ONE;
+        int quantity1 = 3;
+
+        ProductId product2Id = ProductId.generateProductId();
+        BigDecimal unitPrice2 = BigDecimal.TWO;
+        int quantity2 = 4;
+
+        // Act
+        order.addOrderItem(product1Id, unitPrice1, quantity1); // 3
+        order.addOrderItem(product2Id, unitPrice2, quantity2); // 8
+
+       BigDecimal orderTotalPrice = order.getTotalPrice();
+
+        // Assert
+        Assertions.assertEquals(BigDecimal.valueOf(11), orderTotalPrice);
+    }
 
 /**
             * 4. Calcular el importe total de una línea.
