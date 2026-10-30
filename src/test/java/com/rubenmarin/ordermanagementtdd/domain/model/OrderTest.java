@@ -81,7 +81,7 @@ class OrderTest {
 
     @Test
     void shouldAddOrderItemToDraftOrder() {
-        // Arange
+        // Arrange
         Order order = Order.create();
         ProductId productId = ProductId.generateProductId();
         BigDecimal unitPrice = BigDecimal.TEN;
@@ -98,9 +98,11 @@ class OrderTest {
     @ParameterizedTest
     @ValueSource(ints = {-1,0})
     void shouldRejectNegativeOrZeroQuantity(int quantity) {
+        // Arrange
         Order order = Order.create();
         ProductId productId = ProductId.generateProductId();
         BigDecimal unitPrice = BigDecimal.TEN;
+        // Act & Assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             order.addOrderItem(productId, unitPrice, quantity);
         });
@@ -108,10 +110,12 @@ class OrderTest {
 
     @Test
     void shouldRejectNegativeUnitPrice(){
+        // Arrange
         Order order = Order.create();
         ProductId productId = ProductId.generateProductId();
         BigDecimal unitPrice = new  BigDecimal("-1");
         int quantity = 1;
+        // Act & Assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             order.addOrderItem(productId, unitPrice, quantity);
         });
@@ -136,10 +140,12 @@ class OrderTest {
 
     @Test
     void shouldRejectNullUnitPrice(){
+        // Arrange
         Order order = Order.create();
         ProductId productId = ProductId.generateProductId();;
         BigDecimal unitPrice = null;
         int quantity = 1;
+        // Act & Assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             order.addOrderItem(productId, unitPrice, quantity);
         });
@@ -147,10 +153,12 @@ class OrderTest {
 
     @Test
     void shouldRejectNullProductId(){
+        // Arrange
         Order order = Order.create();
         ProductId productId = null;
         BigDecimal unitPrice = BigDecimal.TEN;
         int quantity = 1;
+        // Act & Assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             order.addOrderItem(productId, unitPrice, quantity);
         });
@@ -158,7 +166,7 @@ class OrderTest {
 
     @Test
     void shouldCalculateOrderTotalPrice() {
-        // Arange
+        // Arrange
         Order order = Order.create();
         ProductId product1Id = ProductId.generateProductId();
         BigDecimal unitPrice1 = BigDecimal.ONE;
@@ -180,7 +188,6 @@ class OrderTest {
 
     @Test
     void shouldConfirmDraftOrderWithItems() {
-
         // Arrange
         Order order = Order.create();
         ProductId productId = ProductId.generateProductId();
@@ -193,8 +200,17 @@ class OrderTest {
 
         //Assert
         Assertions.assertEquals(OrderStatus.CONFIRMED, order.getStatus());
+    }
 
+    @Test
+    void shouldRejectConfirmingEmptyOrder() {
+        // Arrange
+        Order order = Order.create();
 
+        // Act & Assert
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            order.confirm();
+        });
     }
 
 /** User Story 3 — Confirmar pedidos
