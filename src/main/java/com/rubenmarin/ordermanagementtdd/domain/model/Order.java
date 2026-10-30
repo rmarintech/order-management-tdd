@@ -59,4 +59,8 @@ public class Order {
         status = OrderStatus.CONFIRMED;
 
     }
+
+    public void cancel() {
+        status = OrderStatus.CANCELLED;
+    }
 }
