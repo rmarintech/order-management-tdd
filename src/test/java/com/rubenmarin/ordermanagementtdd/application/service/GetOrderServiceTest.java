@@ -1,5 +1,6 @@
 package com.rubenmarin.ordermanagementtdd.application.service;
 
+import com.rubenmarin.ordermanagementtdd.application.port.out.persistence.OrderRepository;
 import com.rubenmarin.ordermanagementtdd.domain.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ class GetOrderServiceTest {
     GetOrderService getOrderService;
 
     @Test
-    void test_GetOrderService() {
+    void shouldRetrieveExistingOrderById() {
         Order order = Order.create();
         OrderId orderId = order.getOrderId();
         ProductId productId = ProductId.generateProductId();
