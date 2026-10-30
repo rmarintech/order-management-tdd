@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Order {
 
-    private final OrderStatus status;
+    private OrderStatus status;
     private final OrderId orderId;
     private final List<OrderItem> items;
 
@@ -42,8 +42,12 @@ public class Order {
     }
 
     public void addOrderItem(ProductId productId, BigDecimal unitPrice, int quantity) {
-
         OrderItem orderItem = new OrderItem(productId, unitPrice,  quantity) ;
         items.add(orderItem);
+    }
+
+    public void confirm() {
+        status = OrderStatus.CONFIRMED;
+
     }
 }
