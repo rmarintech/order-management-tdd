@@ -11,17 +11,17 @@ public class OrderItem {
 
     public OrderItem(ProductId productId, BigDecimal unitPrice, int quantity) {
 
-
-        if (quantity <= 0) {
-           throw new IllegalArgumentException("Quantity must be greater than zero.");
+        if (productId == null) {
+            throw new IllegalArgumentException("ProductId cannot be null.");
         }
-
+        if (unitPrice == null) {
+            throw new IllegalArgumentException("UnitPrice cannot be null.");
+        }
         if (unitPrice.signum() < 0) {
             throw new IllegalArgumentException("UnitPrice cannot be negative.");
         }
-
-        if (productId == null) {
-            throw new IllegalArgumentException("ProductId cannot be null.");
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero.");
         }
 
         this.productId = productId;
