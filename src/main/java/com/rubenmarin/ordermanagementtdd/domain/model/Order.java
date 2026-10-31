@@ -17,6 +17,16 @@ public class Order {
         this.items = new ArrayList<>();
     }
 
+    private Order(OrderId orderId) {
+        this.orderId = orderId;
+        this.status = OrderStatus.DRAFT;
+        this.items = new ArrayList<>();
+    }
+
+    public static Order restore(OrderId orderId){
+        return new Order(orderId);
+    }
+
     public static Order create() {
         return new Order();
     }
