@@ -3,11 +3,14 @@ package com.rubenmarin.ordermanagementtdd.infrastructure.adapter.out.persistence
 import com.rubenmarin.ordermanagementtdd.application.port.out.persistence.OrderRepository;
 import com.rubenmarin.ordermanagementtdd.domain.model.Order;
 import com.rubenmarin.ordermanagementtdd.domain.model.OrderId;
+import com.rubenmarin.ordermanagementtdd.domain.model.OrderStatus;
+import com.rubenmarin.ordermanagementtdd.domain.model.ProductId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @SpringBootTest
@@ -21,12 +24,22 @@ class OrderJpaAdapterTest {
 
           Order order = Order.create();
           OrderId orderId = order.getOrderId();
+          ProductId productId = ProductId.generateProductId();
+          BigDecimal unitPrice = BigDecimal.TEN;
+          int quantity = 3;
 
+          order.addOrderItem(productId, unitPrice, quantity);
+
+          order.confirm();
           orderRepository.save(order);
 
-          Optional<Order> found = orderRepository.findById(orderId);
+          Optional<Order> foundOptional = orderRepository.findById(orderId);
+          Assertions.assertTrue(foundOptional.isPresent());
 
-          Assertions.assertTrue(found.isPresent());
-          Assertions.assertEquals(orderId, found.get().getOrderId());
+          Order found = foundOptional.orElseThrow();
+          Assertions.assertEquals(orderId, found.getOrderId());
+
+          Assertions.assertEquals(OrderStatus.CONFIRMED, found.getStatus());
+
      }
 }
