@@ -17,14 +17,14 @@ public class Order {
         this.items = new ArrayList<>();
     }
 
-    private Order(OrderId orderId) {
+    private Order(OrderId orderId, OrderStatus status) {
         this.orderId = orderId;
-        this.status = OrderStatus.DRAFT;
+        this.status = status;
         this.items = new ArrayList<>();
     }
 
-    public static Order restore(OrderId orderId){
-        return new Order(orderId);
+    public static Order restore(OrderId orderId, OrderStatus status){
+        return new Order(orderId, status);
     }
 
     public static Order create() {

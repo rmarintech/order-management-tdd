@@ -1,9 +1,7 @@
 package com.rubenmarin.ordermanagementtdd.infrastructure.adapter.out.persistence;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.rubenmarin.ordermanagementtdd.domain.model.OrderStatus;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -15,11 +13,16 @@ public class OrderJpaEntity {
     @Column(nullable = false)
     UUID orderId;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    OrderStatus status;
+
     public OrderJpaEntity() {
     }
 
-    public OrderJpaEntity(UUID orderId) {
+    public OrderJpaEntity(UUID orderId, OrderStatus status) {
         this.orderId = orderId;
+        this.status = status;
     }
 
     public UUID getOrderId() {
