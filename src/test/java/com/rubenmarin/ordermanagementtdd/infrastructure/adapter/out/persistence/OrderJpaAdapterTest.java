@@ -1,10 +1,7 @@
 package com.rubenmarin.ordermanagementtdd.infrastructure.adapter.out.persistence;
 
 import com.rubenmarin.ordermanagementtdd.application.port.out.persistence.OrderRepository;
-import com.rubenmarin.ordermanagementtdd.domain.model.Order;
-import com.rubenmarin.ordermanagementtdd.domain.model.OrderId;
-import com.rubenmarin.ordermanagementtdd.domain.model.OrderStatus;
-import com.rubenmarin.ordermanagementtdd.domain.model.ProductId;
+import com.rubenmarin.ordermanagementtdd.domain.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +37,15 @@ class OrderJpaAdapterTest {
           Assertions.assertEquals(orderId, found.getOrderId());
 
           Assertions.assertEquals(OrderStatus.CONFIRMED, found.getStatus());
+          Assertions.assertEquals(1, found.getOrderItems().size());
+
+          OrderItem  orderItem = found.getOrderItems().getFirst();
+          Assertions.assertEquals(productId, orderItem.getProductId());
+          Assertions.assertEquals(unitPrice, orderItem.getUnitPrice());
+          Assertions.assertEquals(quantity, orderItem.getQuantity());
+
+
+
 
      }
 }
