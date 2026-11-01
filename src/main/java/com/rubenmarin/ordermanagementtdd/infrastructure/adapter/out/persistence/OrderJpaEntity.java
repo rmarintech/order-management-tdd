@@ -3,6 +3,8 @@ package com.rubenmarin.ordermanagementtdd.infrastructure.adapter.out.persistence
 import com.rubenmarin.ordermanagementtdd.domain.model.OrderStatus;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +19,12 @@ public class OrderJpaEntity {
     @Enumerated(EnumType.STRING)
     OrderStatus status;
 
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    List<OrderItemJpaEntity> items = new ArrayList<>();
+
     public OrderJpaEntity() {
     }
 
@@ -25,8 +33,20 @@ public class OrderJpaEntity {
         this.status = status;
     }
 
+    public void addOrderItem(OrderItemJpaEntity item) {
+        items.add(item);
+        item.setOrder(this);
+    }
+
     public UUID getOrderId() {
         return orderId;
     }
 
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public List<OrderItemJpaEntity> getItems() {
+        return items;
+    }
 }

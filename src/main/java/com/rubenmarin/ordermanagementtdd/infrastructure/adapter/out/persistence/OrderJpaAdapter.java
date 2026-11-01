@@ -4,6 +4,7 @@ import com.rubenmarin.ordermanagementtdd.application.port.out.persistence.OrderR
 import com.rubenmarin.ordermanagementtdd.domain.model.Order;
 import com.rubenmarin.ordermanagementtdd.domain.model.OrderId;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -22,16 +23,17 @@ public class OrderJpaAdapter implements OrderRepository {
     }
 
     @Override
+    @Transactional(readOnly = true) //Mantiene abierta la transacción mientras el mapper convierte la entidad JPA al dominio
     public Optional<Order> findById(OrderId orderId) {
         Optional<OrderJpaEntity> found = orderJpaRepository.findById(orderId.orderId());
-        Optional<Order> toRet = found.map(entity -> orderJpaMapper.toDomain(entity));
+        Optional<Order> toRet = found.map(entity -> orderJpaMapper.toOrderDomain(entity));
 
         return toRet;
     }
 
     @Override
     public Order save(Order order) {
-        OrderJpaEntity saved = orderJpaRepository.save(orderJpaMapper.toEntity(order));
-        return orderJpaMapper.toDomain(saved);
+        OrderJpaEntity saved = orderJpaRepository.save(orderJpaMapper.toOrderEntity(order));
+        return orderJpaMapper.toOrderDomain(saved);
     }
 }
