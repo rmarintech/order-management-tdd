@@ -22,7 +22,8 @@ public class OrderJpaEntity {
     @OneToMany(
             mappedBy = "order",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY,
+    orphanRemoval = true)
     List<OrderItemJpaEntity> items = new ArrayList<>();
 
     public OrderJpaEntity() {
@@ -36,6 +37,19 @@ public class OrderJpaEntity {
     public void addOrderItem(OrderItemJpaEntity item) {
         items.add(item);
         item.setOrder(this);
+    }
+
+    public void removeOrderItems() {
+        //items.clear() elimina las referencias desde el padre.
+        //item.setOrder(null) elimina las referencias desde los hijos.
+        //orphanRemoval = true permite que Hibernate elimine las filas huérfanas.
+
+        //Desvinculamos la order de cada item
+        items.forEach(item -> {
+            item.setOrder(null);
+        });
+        //mantener la misma colección y eliminar sus elementos
+        items.clear();
     }
 
     public UUID getOrderId() {
