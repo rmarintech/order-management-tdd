@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 @SpringBootTest
 class OrderJpaAdapterTest {
@@ -171,8 +172,13 @@ class OrderJpaAdapterTest {
         Assertions.assertEquals(order.getOrderId(), foundAgain.getOrderId());
         Assertions.assertEquals(OrderStatus.CONFIRMED, foundAgain.getStatus());
         Assertions.assertEquals(1, foundAgain.getOrderItems().size());
-
-
     }
+
+    @Test
+    void shouldReturnEmptyOptionalWhenOrderIsNotFound(){
+        Optional<Order> foundOptional = orderRepository.findById(new OrderId(UUID.randomUUID()));
+        Assertions.assertTrue(foundOptional.isEmpty());
+    }
+
 
 }
