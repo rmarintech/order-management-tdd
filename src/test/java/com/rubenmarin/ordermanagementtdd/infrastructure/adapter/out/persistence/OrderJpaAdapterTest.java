@@ -146,4 +146,33 @@ class OrderJpaAdapterTest {
 
     }
 
+    @Test
+    void shouldUpdateExistingOrderStatus(){
+
+        Order order = Order.create();
+        order.addOrderItem(ProductId.generateProductId(), BigDecimal.TEN, 3);
+        orderRepository.save(order);
+
+        Optional<Order> foundOptional = orderRepository.findById(order.getOrderId());
+        Assertions.assertTrue(foundOptional.isPresent());
+
+        Order found = foundOptional.orElseThrow();
+        Assertions.assertEquals(order.getOrderId(), found.getOrderId());
+        Assertions.assertEquals(OrderStatus.DRAFT, found.getStatus());
+        Assertions.assertEquals(1, found.getOrderItems().size());
+
+        found.confirm();
+        orderRepository.save(found);
+
+        Optional<Order> foundOptionalAgain = orderRepository.findById(order.getOrderId());
+        Assertions.assertTrue(foundOptionalAgain.isPresent());
+
+        Order foundAgain = foundOptionalAgain.orElseThrow();
+        Assertions.assertEquals(order.getOrderId(), foundAgain.getOrderId());
+        Assertions.assertEquals(OrderStatus.CONFIRMED, foundAgain.getStatus());
+        Assertions.assertEquals(1, foundAgain.getOrderItems().size());
+
+
+    }
+
 }
