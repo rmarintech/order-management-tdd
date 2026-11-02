@@ -52,6 +52,10 @@ public class OrderJpaEntity {
         items.clear();
     }
 
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
     public UUID getOrderId() {
         return orderId;
     }
@@ -63,4 +67,6 @@ public class OrderJpaEntity {
     public List<OrderItemJpaEntity> getItems() {
         return items;
     }
+
+
 }

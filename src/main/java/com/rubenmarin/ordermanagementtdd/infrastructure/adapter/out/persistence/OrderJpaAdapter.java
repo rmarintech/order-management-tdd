@@ -40,8 +40,9 @@ public class OrderJpaAdapter implements OrderRepository {
         Optional<OrderJpaEntity> found = orderJpaRepository.findById(order.getOrderId().orderId());
         if (found.isPresent()) {
             OrderJpaEntity orderJpaEntity = found.get();
-            orderJpaEntity.removeOrderItems();
+            orderJpaEntity.setStatus(order.getStatus());
 
+            orderJpaEntity.removeOrderItems();
             for (OrderItem orderItem : order.getOrderItems()){
                 orderJpaEntity.addOrderItem(orderJpaMapper.toOrderItemEntity(orderItem));
             }
